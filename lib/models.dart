@@ -14,5 +14,14 @@ class StudySet {
   String title;
   List<Flashcard> cards;
 
-  StudySet({required this.title, required this.cards});
+  int lastCardIndex;
+
+  List<int> cardStatuses;
+
+  StudySet({
+    required this.title,
+    required this.cards,
+    this.lastCardIndex = 0,
+    List<int>? cardStatuses,
+  }) : cardStatuses = cardStatuses ?? List<int>.filled(cards.length, 0);
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:codingminds_bootstrap/models.dart';
 
 class FlashcardPlayerPage extends StatefulWidget {
@@ -12,27 +11,43 @@ class FlashcardPlayerPage extends StatefulWidget {
 }
 
 class _FlashcardPlayerPageState extends State<FlashcardPlayerPage> {
-  int _currentIndex = 0;
+  late int _currentIndex;
   bool _isFlipped = false;
 
-  int _understoodCount = 0;
-  int _reviewCount = 0;
+  int get _understoodCount =>
+      widget.studySet.cardStatuses.where((status) => status == 1).length;
+  int get _reviewCount =>
+      widget.studySet.cardStatuses.where((status) => status == 2).length;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentIndex = widget.studySet.lastCardIndex;
+  }
 
   void _handleSwipe(DismissDirection direction) {
     if (direction == DismissDirection.endToStart) {
-      setState(() {
-        _reviewCount++;
-      });
+      widget.studySet.cardStatuses[_currentIndex] = 2;
     } else if (direction == DismissDirection.startToEnd) {
-      setState(() {
-        _understoodCount++;
-      });
+      widget.studySet.cardStatuses[_currentIndex] = 1;
     }
 
     setState(() {
       _currentIndex++;
       _isFlipped = false;
+      widget.studySet.lastCardIndex = _currentIndex;
     });
+  }
+
+  void _goBack() {
+    if (_currentIndex > 0) {
+      setState(() {
+        _currentIndex--;
+        _isFlipped = false;
+        widget.studySet.cardStatuses[_currentIndex] = 0;
+        widget.studySet.lastCardIndex = _currentIndex;
+      });
+    }
   }
 
   void _toggleFavorite() {
@@ -45,9 +60,11 @@ class _FlashcardPlayerPageState extends State<FlashcardPlayerPage> {
   void _resetStudySession() {
     setState(() {
       _currentIndex = 0;
-      _understoodCount = 0;
-      _reviewCount = 0;
       _isFlipped = false;
+      widget.studySet.lastCardIndex = 0;
+      for (int i = 0; i < widget.studySet.cardStatuses.length; i++) {
+        widget.studySet.cardStatuses[i] = 0;
+      }
     });
   }
 
@@ -163,7 +180,6 @@ class _FlashcardPlayerPageState extends State<FlashcardPlayerPage> {
                 key: ValueKey<int>(_currentIndex),
                 direction: DismissDirection.horizontal,
                 onDismissed: _handleSwipe,
-
                 background: Container(
                   decoration: BoxDecoration(
                     color: Colors.green,
@@ -173,7 +189,6 @@ class _FlashcardPlayerPageState extends State<FlashcardPlayerPage> {
                   padding: const EdgeInsets.only(left: 32.0),
                   child: const Icon(Icons.check, color: Colors.white, size: 48),
                 ),
-
                 secondaryBackground: Container(
                   decoration: BoxDecoration(
                     color: Colors.red,
@@ -215,7 +230,6 @@ class _FlashcardPlayerPageState extends State<FlashcardPlayerPage> {
                               onPressed: _toggleFavorite,
                             ),
                           ),
-
                           Center(
                             child: Text(
                               _isFlipped
@@ -230,7 +244,6 @@ class _FlashcardPlayerPageState extends State<FlashcardPlayerPage> {
                               ),
                             ),
                           ),
-
                           const Align(
                             alignment: Alignment.bottomCenter,
                             child: Text(
@@ -248,20 +261,15 @@ class _FlashcardPlayerPageState extends State<FlashcardPlayerPage> {
           ),
         ),
 
-        const Padding(
-          padding: EdgeInsets.only(bottom: 32.0),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 32.0),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                '👈 Swipe Left\n(Review)',
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.grey),
-              ),
-              Text(
-                'Swipe Right 👉\n(Got it)',
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.grey),
+              IconButton(
+                icon: const Icon(Icons.arrow_back, size: 32),
+                color: Colors.deepPurple,
+                onPressed: _currentIndex > 0 ? _goBack : null,
               ),
             ],
           ),
