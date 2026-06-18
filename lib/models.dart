@@ -13,9 +13,7 @@ class Flashcard {
 class StudySet {
   String title;
   List<Flashcard> cards;
-
   int lastCardIndex;
-
   List<int> cardStatuses;
 
   StudySet({

@@ -128,7 +128,7 @@ class _FlashcardPlayerPageState extends State<FlashcardPlayerPage> {
                 value: progress,
                 minHeight: 8,
                 backgroundColor: Colors.grey[300],
-                color: Colors.deepPurple,
+                color: Colors.teal,
               ),
               const SizedBox(height: 8),
               Row(
@@ -168,7 +168,6 @@ class _FlashcardPlayerPageState extends State<FlashcardPlayerPage> {
             ],
           ),
         ),
-
         Expanded(
           child: Padding(
             padding: const EdgeInsets.symmetric(
@@ -244,13 +243,6 @@ class _FlashcardPlayerPageState extends State<FlashcardPlayerPage> {
                               ),
                             ),
                           ),
-                          const Align(
-                            alignment: Alignment.bottomCenter,
-                            child: Text(
-                              'Tap to flip',
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                          ),
                         ],
                       ),
                     ),
@@ -260,7 +252,6 @@ class _FlashcardPlayerPageState extends State<FlashcardPlayerPage> {
             ),
           ),
         ),
-
         Padding(
           padding: const EdgeInsets.only(bottom: 32.0),
           child: Row(
@@ -268,7 +259,7 @@ class _FlashcardPlayerPageState extends State<FlashcardPlayerPage> {
             children: [
               IconButton(
                 icon: const Icon(Icons.arrow_back, size: 32),
-                color: Colors.deepPurple,
+                color: Colors.teal,
                 onPressed: _currentIndex > 0 ? _goBack : null,
               ),
             ],

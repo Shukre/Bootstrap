@@ -12,7 +12,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
-
   final List<StudySet> _studySets = [];
 
   void _onItemTapped(int index) {
@@ -80,7 +79,7 @@ class _HomePageState extends State<HomePage> {
               vertical: 8,
             ),
             leading: const CircleAvatar(
-              backgroundColor: Colors.deepPurple,
+              backgroundColor: Colors.teal,
               child: Icon(Icons.style, color: Colors.white),
             ),
             title: Text(
@@ -88,14 +87,105 @@ class _HomePageState extends State<HomePage> {
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             subtitle: Text('${studySet.cards.length} terms'),
-            trailing: const Icon(Icons.chevron_right),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.delete_outline, color: Colors.red),
+                  onPressed: () {
+                    setState(() {
+                      _studySets.removeAt(index);
+                    });
+                  },
+                ),
+                const Icon(Icons.chevron_right),
+              ],
+            ),
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => FlashcardPlayerPage(studySet: studySet),
                 ),
+              ).then((_) {
+                setState(() {});
+              });
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildFavoritesView() {
+    final favoriteSets = _studySets.where((set) {
+      return set.cards.any((card) => card.isFavorite);
+    }).toList();
+
+    if (favoriteSets.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.favorite_border, size: 80, color: Colors.grey),
+            const SizedBox(height: 16),
+            const Text(
+              'No favorites yet.',
+              style: TextStyle(fontSize: 18, color: Colors.grey),
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              'Tap the heart icon on a flashcard to save it here.',
+              style: TextStyle(color: Colors.grey),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return ListView.builder(
+      padding: const EdgeInsets.all(16.0),
+      itemCount: favoriteSets.length,
+      itemBuilder: (context, index) {
+        final originalSet = favoriteSets[index];
+
+        final favoriteCards = originalSet.cards
+            .where((c) => c.isFavorite)
+            .toList();
+
+        return Card(
+          elevation: 2,
+          margin: const EdgeInsets.only(bottom: 12),
+          child: ListTile(
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 8,
+            ),
+            leading: const CircleAvatar(
+              backgroundColor: Colors.redAccent,
+              child: Icon(Icons.favorite, color: Colors.white),
+            ),
+            title: Text(
+              originalSet.title,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+            subtitle: Text('${favoriteCards.length} favorite terms'),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () {
+              final tempFavoriteSet = StudySet(
+                title: '${originalSet.title} (Favorites)',
+                cards: favoriteCards,
               );
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      FlashcardPlayerPage(studySet: tempFavoriteSet),
+                ),
+              ).then((_) {
+                setState(() {});
+              });
             },
           ),
         );
@@ -107,14 +197,13 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final List<Widget> pages = [
       _buildHomeView(),
-      const Center(
-        child: Text('Favorites Page', style: TextStyle(fontSize: 24)),
-      ),
+      _buildFavoritesView(),
       const Center(child: Text('Profile Page', style: TextStyle(fontSize: 24))),
     ];
 
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text('My Flashcards'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         centerTitle: true,
@@ -136,7 +225,7 @@ class _HomePageState extends State<HomePage> {
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.deepPurple,
+        selectedItemColor: Colors.teal,
         onTap: _onItemTapped,
       ),
     );
