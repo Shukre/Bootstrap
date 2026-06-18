@@ -117,6 +117,30 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Widget _buildProfileView() {
+    final ButtonStyle style = ElevatedButton.styleFrom(
+      textStyle: const TextStyle(fontSize: 20),
+    );
+    return Center(
+      child: Column(
+        children: [
+          SizedBox(height: 20),
+          CircleAvatar(
+            backgroundColor: Colors.grey,
+            radius: 80,
+            child: Text('SA'),
+          ),
+          ProfileButton("My Account", Icons.account_box),
+          ProfileButton("Notifications", Icons.edit_notifications),
+          ProfileButton("Settings", Icons.settings),
+          ProfileButton("Help Center", Icons.shield),
+          ProfileButton("Log Out", Icons.logout),
+          Spacer(),
+        ],
+      ),
+    );
+  }
+
   Widget _buildFavoritesView() {
     final favoriteSets = _studySets.where((set) {
       return set.cards.any((card) => card.isFavorite);
@@ -198,13 +222,16 @@ class _HomePageState extends State<HomePage> {
     final List<Widget> pages = [
       _buildHomeView(),
       _buildFavoritesView(),
-      const Center(child: Text('Profile Page', style: TextStyle(fontSize: 24))),
+      _buildProfileView(),
     ];
 
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: const Text('My Flashcards'),
+        title: const Text(
+          'Bootstrap',
+          style: TextStyle(fontSize: 18, color: Colors.grey),
+        ),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         centerTitle: true,
       ),
@@ -227,6 +254,43 @@ class _HomePageState extends State<HomePage> {
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.teal,
         onTap: _onItemTapped,
+      ),
+    );
+  }
+}
+
+class ProfileButton extends StatelessWidget {
+  const ProfileButton(this.text, this.icon);
+  final String text;
+  final IconData icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+      child: TextButton(
+        style: TextButton.styleFrom(
+          foregroundColor: const Color(0xFFFF7643),
+          padding: const EdgeInsets.all(20),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          backgroundColor: const Color(0xFFF5F6F9),
+        ),
+        onPressed: () {},
+        child: Row(
+          children: [
+            Icon(icon, color: Colors.teal, size: 24.0),
+            const SizedBox(width: 20),
+            Expanded(
+              child: Text(
+                text,
+                style: const TextStyle(color: Color(0xFF757575)),
+              ),
+            ),
+            const Icon(Icons.arrow_forward_ios, color: Color(0xFF757575)),
+          ],
+        ),
       ),
     );
   }
