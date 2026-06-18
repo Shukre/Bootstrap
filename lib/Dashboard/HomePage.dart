@@ -227,12 +227,39 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: const Text(
-          'Bootstrap',
-          style: TextStyle(fontSize: 18, color: Colors.grey),
+        title: Row(
+          mainAxisSize:
+              MainAxisSize.min, // Keeps the row centered in the AppBar
+          children: [
+            const Text(
+              'Boot',
+              style: TextStyle(
+                fontSize: 26,
+                fontWeight: FontWeight.w900,
+                color: Colors.white,
+                letterSpacing: 1.0,
+              ),
+            ),
+            const SizedBox(width: 4), // Tiny gap
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+              decoration: BoxDecoration(
+                color: Colors.white, // Inverts the color for the badge
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: const Text(
+                'strap',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.teal, // Text matches your app bar
+                ),
+              ),
+            ),
+          ],
         ),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: Colors.teal,
+        foregroundColor: Colors.white,
         centerTitle: true,
       ),
       body: pages[_selectedIndex],

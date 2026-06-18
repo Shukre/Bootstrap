@@ -25,13 +25,47 @@ class _LoginScreenState extends State<LogInScreen> {
       textStyle: const TextStyle(fontSize: 20),
     );
     return Scaffold(
+      backgroundColor: Colors.teal,
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Center(
           child: Column(
             children: [
               Spacer(),
-              Icon(Icons.login, color: Colors.pink, size: 45.0),
+              Row(
+                mainAxisSize:
+                    MainAxisSize.min, // Keeps the row centered in the AppBar
+                children: [
+                  const Text(
+                    'Boot',
+                    style: TextStyle(
+                      fontSize: 39,
+                      fontWeight: FontWeight.w900,
+                      color: Colors.white,
+                      letterSpacing: 1.0,
+                    ),
+                  ),
+                  const SizedBox(width: 4), // Tiny gap
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 2,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white, // Inverts the color for the badge
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const Text(
+                      'strap',
+                      style: TextStyle(
+                        fontSize: 33,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.teal, // Text matches your app bar
+                      ),
+                    ),
+                  ),
+                ],
+              ),
               Spacer(),
               TextField(
                 decoration: InputDecoration(
