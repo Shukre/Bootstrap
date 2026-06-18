@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-
-// Don't forget to import the file at the top!
-// import 'login_screen.dart';
+import 'package:codingminds_bootstrap/Dashboard/HomePage.dart';
 
 class LogInScreen extends StatefulWidget {
   const LogInScreen({super.key});
@@ -16,7 +14,6 @@ class _LoginScreenState extends State<LogInScreen> {
 
   @override
   void dispose() {
-    // Clean up the controller when the widget is disposed.
     emailAddressController.dispose();
     passwordController.dispose();
     super.dispose();
@@ -24,12 +21,18 @@ class _LoginScreenState extends State<LogInScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final ButtonStyle style = ElevatedButton.styleFrom(
+      textStyle: const TextStyle(fontSize: 20),
+    );
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Center(
           child: Column(
             children: [
+              Spacer(),
+              Icon(Icons.login, color: Colors.pink, size: 45.0),
+              Spacer(),
               TextField(
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
@@ -44,27 +47,25 @@ class _LoginScreenState extends State<LogInScreen> {
                 ),
                 controller: passwordController,
               ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ElevatedButton(
+                  style: style,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (context) => const HomePage(),
+                      ),
+                    );
+                  },
+                  child: const Text('Log In'),
+                ),
+              ),
+              Spacer(),
             ],
           ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        // When the user presses the button, show an alert dialog containing
-        // the text that the user has entered into the text field.
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                // Retrieve the text that the user has entered by using the
-                // TextEditingController.
-                content: Text(emailAddressController.text),
-              );
-            },
-          );
-        },
-        tooltip: 'Show me the value!',
-        child: const Icon(Icons.text_fields),
       ),
     );
   }
