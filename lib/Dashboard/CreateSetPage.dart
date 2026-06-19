@@ -81,22 +81,11 @@ class _CreateSetPageState extends State<CreateSetPage> {
     DatabaseReference ref = FirebaseDatabase.instance.ref(
       "users/flashcards/$title",
     );
-
-    // for card in newCards:
-    await ref.set(convertCardsToJson(newCards));
-
-    // await ref.set({
-    //   "name": "John",
-    //   "age": 18,
-    //   "address": {"line1": "100 Mountain View"},
-    // });
-
+    await ref.set(convertCards(newCards));
     Navigator.pop(context, newStudySet);
   }
 
-  dynamic convertCardsToJson(List<Flashcard>? newCards) {
-    /// MODIFY CODE ONLY BELOW THIS LINE
-
+  dynamic convertCards(List<Flashcard>? newCards) {
     if (newCards == null) {
       return null;
     }
@@ -107,41 +96,33 @@ class _CreateSetPageState extends State<CreateSetPage> {
       map[card.term] = card.definition;
     }
     temp.addAll(map);
-    // print("------------------------------------");
-    // print(jsonEncode(map));
-    // print("------------------------------------");
-    // var temp = {"name": "John", "age": "18", "address": "blah blah blah"};
-    // print(temp);
-    // print("------------------------------------");
     return temp;
-
-    // List<Map<String, dynamic>> mappedList = newCards.map((obj) {
-    //   return {obj.term: obj.definition};
-    // }).toList();
-
-    // String jsonList = jsonEncode(mappedList);
-    // return jsonList;
-
-    /// MODIFY CODE ONLY ABOVE THIS LINE
-    ///
-    ///
-    /// I/flutter (  931): {"name":"John","age":"18","address":"here"}
-    //      I/flutter (  931): ------------------------------------
-    //    I/flutter (  931): {name: John, age: 18, address: blah blah blah}
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create Study Set'),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: const Text(
+          'Create',
+          style: TextStyle(
+            fontSize: 26,
+            fontWeight: FontWeight.w900,
+            color: Colors.white,
+            letterSpacing: 1.0,
+          ),
+        ),
+        backgroundColor: Colors.teal,
         actions: [
           TextButton(
             onPressed: _saveSet,
             child: const Text(
               'Done',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: Colors.white,
+              ),
             ),
           ),
         ],
