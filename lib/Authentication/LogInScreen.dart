@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:codingminds_bootstrap/Dashboard/HomePage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LogInScreen extends StatefulWidget {
   const LogInScreen({super.key});
@@ -11,6 +12,7 @@ class LogInScreen extends StatefulWidget {
 class _LoginScreenState extends State<LogInScreen> {
   final emailAddressController = TextEditingController();
   final passwordController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   void dispose() {
@@ -127,13 +129,24 @@ class _LoginScreenState extends State<LogInScreen> {
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                               ),
-                              onPressed: () {
+                              onPressed: () async {
+                                try {
+                                  await _auth.signInWithEmailAndPassword(
+                                    email: emailAddressController.text.trim(),
+                                    password: passwordController.text.trim(),
+                                  );
+
                                 Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute<void>(
-                                    builder: (context) => const HomePage(),
-                                  ),
-                                );
+                                    context,
+                                    MaterialPageRoute<void>(
+                                      builder: (context) => const HomePage(),
+                                    ),
+                                  );
+                                } on FirebaseAuthException catch (e) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text("Signin Failed")),
+                                  );
+                                }
                               },
                               child: const Text(
                                 'Log In',
