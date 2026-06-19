@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:codingminds_bootstrap/models.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class CreateSetPage extends StatefulWidget {
   const CreateSetPage({super.key});
@@ -44,7 +47,7 @@ class _CreateSetPageState extends State<CreateSetPage> {
     }
   }
 
-  void _saveSet() {
+  void _saveSet() async {
     final title = _titleController.text.trim();
 
     if (title.isEmpty) {
@@ -74,7 +77,57 @@ class _CreateSetPageState extends State<CreateSetPage> {
     }
 
     final newStudySet = StudySet(title: title, cards: newCards);
+
+    DatabaseReference ref = FirebaseDatabase.instance.ref(
+      "users/flashcards/$title",
+    );
+
+    // for card in newCards:
+    await ref.set(convertCardsToJson(newCards));
+
+    // await ref.set({
+    //   "name": "John",
+    //   "age": 18,
+    //   "address": {"line1": "100 Mountain View"},
+    // });
+
     Navigator.pop(context, newStudySet);
+  }
+
+  dynamic convertCardsToJson(List<Flashcard>? newCards) {
+    /// MODIFY CODE ONLY BELOW THIS LINE
+
+    if (newCards == null) {
+      return null;
+    }
+
+    Map<String, String> map = new Map<String, String>();
+    var temp = {};
+    for (var card in newCards) {
+      map[card.term] = card.definition;
+    }
+    temp.addAll(map);
+    // print("------------------------------------");
+    // print(jsonEncode(map));
+    // print("------------------------------------");
+    // var temp = {"name": "John", "age": "18", "address": "blah blah blah"};
+    // print(temp);
+    // print("------------------------------------");
+    return temp;
+
+    // List<Map<String, dynamic>> mappedList = newCards.map((obj) {
+    //   return {obj.term: obj.definition};
+    // }).toList();
+
+    // String jsonList = jsonEncode(mappedList);
+    // return jsonList;
+
+    /// MODIFY CODE ONLY ABOVE THIS LINE
+    ///
+    ///
+    /// I/flutter (  931): {"name":"John","age":"18","address":"here"}
+    //      I/flutter (  931): ------------------------------------
+    //    I/flutter (  931): {name: John, age: 18, address: blah blah blah}
   }
 
   @override

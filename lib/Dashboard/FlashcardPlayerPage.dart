@@ -253,7 +253,7 @@ class _FlashcardPlayerPageState extends State<FlashcardPlayerPage> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(bottom: 32.0),
+          padding: const EdgeInsets.only(bottom: 60.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
