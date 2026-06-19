@@ -130,6 +130,7 @@ class _HomePageState extends State<HomePage> {
             radius: 80,
             child: Text('SA'),
           ),
+          SizedBox(height: 10),
           ProfileButton("My Account", Icons.account_box),
           ProfileButton("Notifications", Icons.edit_notifications),
           ProfileButton("Settings", Icons.settings),
@@ -307,7 +308,7 @@ class ProfileButton extends StatelessWidget {
         onPressed: () {},
         child: Row(
           children: [
-            Icon(icon, color: Colors.teal, size: 24.0),
+            Icon(icon, color: Colors.teal, size: 34.0),
             const SizedBox(width: 20),
             Expanded(
               child: Text(
