@@ -56,7 +56,7 @@ class _LoginScreenState extends State<LogInScreen> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: const Text(
-                      'strap',
+                      'Strap',
                       style: TextStyle(
                         fontSize: 33,
                         fontWeight: FontWeight.bold,
@@ -67,19 +67,37 @@ class _LoginScreenState extends State<LogInScreen> {
                 ],
               ),
               Spacer(),
-              TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'Enter email address',
+              DecoratedBox(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(4)),
                 ),
-                controller: emailAddressController,
+                child: TextField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      // borderRadius: BorderRadius.circular(2.0),
+                      // borderSide: BorderSide(width: 2.0, color: Colors.blue),
+                    ),
+                    hintText: 'Email address',
+                  ),
+                  controller: emailAddressController,
+                ),
               ),
-              TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'Enter password',
+              DecoratedBox(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(4)),
                 ),
-                controller: passwordController,
+                child: TextField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      // borderRadius: BorderRadius.circular(2.0),
+                      // borderSide: BorderSide(width: 2.0, color: Colors.blue),
+                    ),
+                    hintText: 'Password',
+                  ),
+                  controller: passwordController,
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -93,7 +111,15 @@ class _LoginScreenState extends State<LogInScreen> {
                       ),
                     );
                   },
-                  child: const Text('Log In'),
+                  child: const Text(
+                    'Log In',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w900,
+                      color: Colors.teal,
+                      letterSpacing: 1.0,
+                    ),
+                  ),
                 ),
               ),
               Spacer(),
