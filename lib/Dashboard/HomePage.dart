@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:codingminds_bootstrap/models.dart';
 import 'package:codingminds_bootstrap/Dashboard/FlashcardPlayerPage.dart';
 import 'CreateSetPage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:codingminds_bootstrap/Authentication/LogInScreen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -131,14 +133,23 @@ class _HomePageState extends State<HomePage> {
             child: Text('SA'),
           ),
           SizedBox(height: 10),
-          ProfileButton("My Account", Icons.account_box),
-          ProfileButton("Notifications", Icons.edit_notifications),
-          ProfileButton("Settings", Icons.settings),
-          ProfileButton("Help Center", Icons.shield),
-          ProfileButton("Log Out", Icons.logout),
+          ProfileButton("My Account", Icons.account_box, () {}),
+          ProfileButton("Notifications", Icons.edit_notifications, () {}),
+          ProfileButton("Settings", Icons.settings, () {}),
+          ProfileButton("Help Center", Icons.shield, () {}),
+          ProfileButton("Log Out", Icons.logout, _logOut),
           Spacer(),
         ],
       ),
+    );
+  }
+
+  void _logOut() {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    _auth.signOut();
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute<void>(builder: (context) => const LogInScreen()),
     );
   }
 
@@ -288,9 +299,10 @@ class _HomePageState extends State<HomePage> {
 }
 
 class ProfileButton extends StatelessWidget {
-  const ProfileButton(this.text, this.icon);
+  const ProfileButton(this.text, this.icon, this.onPressed);
   final String text;
   final IconData icon;
+  final Function() onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -305,7 +317,7 @@ class ProfileButton extends StatelessWidget {
           ),
           backgroundColor: const Color(0xFFF5F6F9),
         ),
-        onPressed: () {},
+        onPressed: onPressed,
         child: Row(
           children: [
             Icon(icon, color: Colors.teal, size: 34.0),

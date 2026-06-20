@@ -136,7 +136,7 @@ class _LoginScreenState extends State<LogInScreen> {
                                     password: passwordController.text.trim(),
                                   );
 
-                                Navigator.pushReplacement(
+                                  Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute<void>(
                                       builder: (context) => const HomePage(),
